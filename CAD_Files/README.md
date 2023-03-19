@@ -1,4 +1,4 @@
-# CAD Files for Tricycle Holonomic Robot
+# CAD Files for Tri-wheel Holonomic Robot
 This repository contains the CAD (computer-aided design) files for a three wheeled omnidirectional drive robot. The CAD files are provided in SLDPRT and SLDASM and can be used for SOLIDWORKS 2021.
 
 ## Contents:
