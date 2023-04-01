@@ -4,7 +4,7 @@ This project is designed to track a balloon using a custom YOLO model and a 3-wh
 
 # Dataset and Model
 
-The YOLOv8 model was trained on the V2 Balloon dataset, resulting in efficient real-time detections at high accuracies. The model was trained using PyTorch, and the best weights were saved to the included yolov8_weights.pt file.
+The YOLOv8 model was trained on the V2 Balloon Detection dataset (https://www.kaggle.com/datasets/vbookshelf/v2-balloon-detection-dataset), resulting in efficient real-time detections at high accuracies. The model was trained using PyTorch, and the best weights were saved to the included yolov8_weights.pt file.
 
 # Hardware Compatibility
 
