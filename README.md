@@ -1,8 +1,11 @@
 # Balloon Trajectory Matching Omnidirectional Robot using YOLO
 
-This project aims to track a balloon using a custom YOLO model and punch it back into the air using a 3 wheeled omnidirectional drive robot. The robot moves in any direction without having to turn, which makes it perfect for this task. YOLOv8 was trained on the V2 Balloon dataset, allowing for efficient real time detections at high accuracies. 
+This project is designed to track a balloon using a custom YOLO model and a 3-wheeled omnidirectional drive robot, which can move in any direction without having to turn. The goal is to punch the balloon back into the air using the robot.
 
-The yolov8_balloon_detection jupyter notebook was used to train the model with PyTorch, with the resulting best weights saved to the included yolov8_weights.pt.
+# Dataset and Model
 
-For compatibility with DepthAI and OpenCV AI Kit hardware, the model must be saved in the Luxonis MyriadX Blob format.
-The weights were converted to the OpenVINO format with http://tools.luxonis.com/ with the OpenVINO files converted to the blob format with http://blobconverter.luxonis.com/
+The YOLOv8 model was trained on the V2 Balloon dataset, resulting in efficient real-time detections at high accuracies. The model was trained using PyTorch, and the best weights were saved to the included yolov8_weights.pt file.
+
+# Hardware Compatibility
+
+For compatibility with DepthAI and OpenCV AI Kit hardware, the model must be saved in the Luxonis MyriadX Blob format. To achieve this, the weights were converted to the OpenVINO format using http://tools.luxonis.com/, and then the OpenVINO files were converted to the blob format using http://blobconverter.luxonis.com/.
