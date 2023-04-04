@@ -1,4 +1,4 @@
-# Balloon Trajectory Matching Omnidirectional Robot using YOLO
+# Balloon Trajectory Matching Omnidirectional Robot using YOLOv8
 
 This project is designed to track a balloon using a custom YOLO model and a 3-wheeled omnidirectional drive robot, which can move in any direction without having to turn. The goal is to punch the balloon back into the air using the robot.
 
