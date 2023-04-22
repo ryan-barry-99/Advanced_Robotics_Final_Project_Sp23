@@ -1,8 +1,29 @@
 #!/usr/bin/env python3
+
 '''
-This script uses an OAK-D camera and a custom YOLOv8 model to track the cartesian coordinates and velocities of
-a balloon in real time.
+File: balloon_tracker.py
+Author: Ryan Barry
+Date: April 18, 2023
+
+Description:
+This script uses an OAK-D camera with the DepthAI library and a custom YOLOv8 model to track 
+the cartesian coordinates and velocities of a balloon in real time.
+
+ROS Node:
+- Node name: balloon_tracker
+- Published topics:
+  - balloon_velocity: Publishes velocity data of the balloon
+  - balloon_bbox: Publishes bounding box data of the balloon
+
+Parts of the Script:
+1. Library and ROS publisher setup
+2. Pipeline and camera settings initialization
+3. Network parameters definition
+4. Output queue connection
+5. Post-processing of YOLOv8 detections to extract balloon coordinates and velocities
+6. Publishing extracted data on ROS topics
 '''
+
 from pathlib import Path
 import sys
 import cv2
@@ -22,7 +43,7 @@ bbox_pub = rospy.Publisher('balloon_bbox', Float32MultiArray, queue_size=10)
 
 
 # Get argument first
-nnPath = "yolov8_weights2.blob"
+nnPath = "yolov8_weights.blob"
 
 if not Path(nnPath).exists():
     import sys
