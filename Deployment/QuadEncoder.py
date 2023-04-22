@@ -1,18 +1,19 @@
-"""
-QuadEncoder class to obtain position and velocity from an incremental encoder.
-This class calculates the distance traveled and velocity of a wheel with the help of an incremental encoder. 
-It provides methods to obtain the net distance traveled by the wheel between calls of the function, 
-the average velocity of the wheel over a specified time window size, and the instantaneous velocity of the wheel 
-between the last two encoder position updates. The class requires input parameters such as the encoder pins, gear ratio, 
-wheel radius, and encoder CPR (counts per revolution) for proper operation. The class also includes a GPIO cleanup 
-function for resetting GPIO pin modes.
-"""
+'''
+This module provides the QuadEncoder class for obtaining position and velocity from an incremental encoder.
+It uses the Jetson.GPIO library to interface with the GPIO pins of a Jetson Nano.
+
+To use this class, the user must provide the GPIO pin numbers of the encoder A and B channels, 
+the gear ratio of the system, the wheel radius, and the encoder counts per revolution (CPR).
+
+Author: Ryan Barry
+Date created: April 22, 2023
+'''
 
 import time
 import Jetson.GPIO as GPIO
 import math.pi as pi
 
-# Quadrature Encoder class to obtain position and velocity from an incremental encoder
+# Quadrature Encoder class to obtain position and velocity from a quadrature encoder
 class QuadEncoder:
     def __init__(self, encoder_A_pin, encoder_B_pin, gear_ratio, wheel_radius, encoder_cpr):
         self.encoder_A_pin = encoder_A_pin
