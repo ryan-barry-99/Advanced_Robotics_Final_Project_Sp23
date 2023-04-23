@@ -33,7 +33,7 @@ WHEEL_RADIUS = 2 * 0.0254  # 2 inch radius wheels converted to meters
 L = 8 * 0.0254  # Length from center of the robot to the center of the wheels converted to meters
 
 
-class OmnidirectionalKinematics:
+class OmnidirectionalForwardKinematics :
     def __init__(self, GEAR_RATIO=GEAR_RATIO, ENC_CPR=ENC_CPR, WHEEL_RADIUS=WHEEL_RADIUS, L=L):
         """
         Initializes the `OmnidirectionalKinematics` instance.
@@ -94,7 +94,7 @@ class OmnidirectionalKinematics:
 
 if __name__ == '__main__':
     try:
-        omni_kin = OmnidirectionalKinematics()
+        omni_kin = OmnidirectionalForwardKinematics ()
         omni_kin.run()
     except rospy.ROSInterruptException:
         omni_kin.enc1.cleanup()
