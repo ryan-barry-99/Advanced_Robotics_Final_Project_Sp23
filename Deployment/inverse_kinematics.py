@@ -75,7 +75,7 @@ class OmnidirectionalInverseKinematics:
             self.pub[i].publish(self.v[i])
 
 if __name__ == '__main__':
-    kinematic_model = OmnidirectionalInverseKinematics()
+    inverse_kinematic_model = OmnidirectionalInverseKinematics()
     while not rospy.is_shutdown():
-        kinematic_model.compute_wheel_velocities()
+        inverse_kinematic_model.compute_wheel_velocities()
         rospy.sleep(0.01)
