@@ -10,6 +10,10 @@ from math import cos, sin
 class OmnidirectionalInverseKinematics:
 
     def __init__(self, WHEEL_RADIUS=2, L=8*.0254):
+        # Initialize ROS node
+        rospy.init_node('inverse_kinematics_node')
+
+        # Define variables
         self.WHEEL_RADIUS = WHEEL_RADIUS
         self.L = L
 
