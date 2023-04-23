@@ -54,8 +54,7 @@ class QuadEncoder:
         counts_per_second = (end_pos - start_pos) / (end_time - start_time)
         counts_per_revolution = self.encoder_cpr * 4
         wheel_circumference = 2 * pi * self.wheel_radius
-        gear_ratio_eff = self.gear_ratio * 11/33
-        wheel_velocity = counts_per_second * wheel_circumference * gear_ratio_eff / counts_per_revolution
+        wheel_velocity = counts_per_second * wheel_circumference * self.gear_ratio / counts_per_revolution
         return wheel_velocity
 
     # Calculate the instantaneous velocity of a wheel between the last two encoder position updates
@@ -65,8 +64,7 @@ class QuadEncoder:
         counts_per_second = (current_pos - self.last_pos) / (current_time - self.last_time)
         counts_per_revolution = self.encoder_cpr * 4
         wheel_circumference = 2 * pi * self.wheel_radius
-        gear_ratio_eff = self.gear_ratio * 11/33
-        wheel_velocity = counts_per_second * wheel_circumference * gear_ratio_eff / counts_per_revolution
+        wheel_velocity = counts_per_second * wheel_circumference * self.gear_ratio / counts_per_revolution
         self.last_pos = current_pos
         self.last_time = current_time
         return wheel_velocity
