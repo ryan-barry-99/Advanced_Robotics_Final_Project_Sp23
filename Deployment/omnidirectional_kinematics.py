@@ -26,15 +26,22 @@ from geometry_msgs.msg import Twist
 from math import cos, sin
 
 
+# Default values for the class attributes
+GEAR_RATIO = 4.4 * 33 / 11  # 4.4:1 Gear ratio motor with 11 tooth drive gear and 33 tooth driven gear
+ENC_CPR = 48  # 48 CPR encoders
+WHEEL_RADIUS = 2 * 0.0254  # 2 inch radius wheels converted to meters
+L = 8 * 0.0254  # Length from center of the robot to the center of the wheels converted to meters
+
+
 class OmnidirectionalKinematics:
-    '''
-    Default Values for this class (Customize this to your application):
-        GEAR_RATIO = 4.4*33/11: 4.4:1 Gear ratio motor with 11 tooth drive gear and 33 tooth driven gear
-        ENC_CPR = 48: 48 CPR encoders
-        WHEEL_RADIUS = 2*.0254: 2 inch radius wheels converted to meters
-        L = 8*.0254: Length from center of the robot to the center of the wheels converted to meters
-    '''
-    def __init__(self, GEAR_RATIO=4.4*33/11, ENC_CPR=48, WHEEL_RADIUS=2*.0254, L=8*.0254):
+    def __init__(self, GEAR_RATIO=GEAR_RATIO, ENC_CPR=ENC_CPR, WHEEL_RADIUS=WHEEL_RADIUS, L=L):
+        """
+        Initializes the `OmnidirectionalKinematics` instance.
+        :param GEAR_RATIO: The gear ratio of the motor.
+        :param ENC_CPR: The encoder count per revolution.
+        :param WHEEL_RADIUS: The radius of the wheel in meters.
+        :param L: The distance from the center of the robot to the center of the wheels in meters.
+        """
         # Initialize ROS node
         rospy.init_node('velocity_node')
 
