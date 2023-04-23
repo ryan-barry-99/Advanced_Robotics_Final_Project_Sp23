@@ -94,9 +94,9 @@ class OmnidirectionalForwardKinematics :
 
 if __name__ == '__main__':
     try:
-        omni_kin = OmnidirectionalForwardKinematics ()
-        omni_kin.run()
+        forward_kinematic_model = OmnidirectionalForwardKinematics()
+        forward_kinematic_model.run()
     except rospy.ROSInterruptException:
-        omni_kin.enc1.cleanup()
-        omni_kin.enc2.cleanup()
-        omni_kin.enc3.cleanup()
+        forward_kinematic_model.enc1.cleanup()
+        forward_kinematic_model.enc2.cleanup()
+        forward_kinematic_model.enc3.cleanup()
