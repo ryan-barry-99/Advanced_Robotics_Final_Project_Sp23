@@ -53,7 +53,7 @@ class OmnidirectionalInverseKinematics:
         self.v = [0.0] * self.N
 
         # Create subscribers for the target velocities
-        rospy.Subscriber('velocity/target_velocity', Twist, self.target_velocity_callback)
+        rospy.Subscriber('velocity/target_velocity', Twist, callback=self.target_velocity_callback)
 
         # Create publishers for the wheel velocities
         self.pub = [rospy.Publisher('velocity/wheel_velocities/'+name+'_target_vel', Float64, queue_size=10) for name in wheel_names]
