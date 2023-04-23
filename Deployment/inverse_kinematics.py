@@ -1,38 +1,76 @@
+  
 #!/usr/bin/env python
 
+"""
+Omnidirectional Inverse Kinematics ROS Node
+
+This node takes in a Twist message containing the target velocities of the robot and uses inverse kinematics to calculate the
+target velocities of each wheel (m/s). The resulting wheel velocities are published to separate topics for each wheel.
+
+The robot model is assumed to have a circular base with N omnidirectional wheels. The wheels are evenly spaced around the base,
+and the orientation of each wheel is shifted by an angle of 2*pi/N radians relative to the previous wheel. The robot can move in any
+direction on a plane.
+
+This code is modular, allowing for different numbers of wheels to be used, and the wheel radius and base width to be easily changed.
+
+Subscribes to:
+    velocity/target_velocity (geometry_msgs/Twist): The target velocities of the robot
+
+Publishes to:
+    velocity/wheel_velocities/wheelX_target_vel (std_msgs/Float64): The target velocity of wheel X, where X is the wheel number
+    
+Author: Ryan Barry
+Date created: April 23, 2023
+"""
 
 import rospy
-from QuadEncoder import QuadEncoder
 from std_msgs.msg import Float64
 from geometry_msgs.msg import Twist
-from math import cos, sin
+from math import cos, sin, atan2, pi
 
 class OmnidirectionalInverseKinematics:
 
-    def __init__(self, WHEEL_RADIUS=2, L=8*.0254):
+    def __init__(self, wheel_radius=2*.0254, base_width=8*.0254, wheel_names=['wheel1', 'wheel2', 'wheel3']):
         # Initialize ROS node
-        rospy.init_node('inverse_kinematics_node')
+        rospy.init_node('omni_inverse_kinematics')
 
-        # Define variables
-        self.WHEEL_RADIUS = WHEEL_RADIUS
-        self.L = L
+        # Define constants and variables
+        self.r = wheel_radius
+        self.L = base_width
+        self.N = len(wheel_names)
+        self.beta = 2*pi/self.N
+        self.wheel_names = wheel_names
 
-        self.target_velocity = Twist()
-        self.target_velocity.linear.x = 0.0
-        self.target_velocity.linear.y = 0.0
-        self.target_velocity.angular.z = 0.0
+        # Initialize target velocities and wheel velocities
+        self.vx = 0.0
+        self.vy = 0.0
+        self.w = 0.0
+        self.v = [0.0] * self.N
 
+        # Create subscribers for the target velocities
         rospy.Subscriber('velocity/target_velocity', Twist, self.target_velocity_callback)
-        
-        # Create publishers for the velocities
-        self.pub1 = rospy.Publisher('velocity/wheel_velocities/wheel1_target_vel', Float64, queue_size=10)
-        self.pub2 = rospy.Publisher('velocity/wheel_velocities/wheel2_target_vel', Float64, queue_size=10)
-        self.pub3 = rospy.Publisher('velocity/wheel_velocities/wheel3_target_vel', Float64, queue_size=10)
+
+        # Create publishers for the wheel velocities
+        self.pub = [rospy.Publisher('velocity/wheel_velocities/'+name+'_target_vel', Float64, queue_size=10) for name in wheel_names]
+
 
     def target_velocity_callback(self, target_vel):
-        self.target_velocity = Twist()
-        self.target_velocity.linear.x = target_vel.linear.x
-        self.target_velocity.linear.y = target_vel.linear.y
-        self.target_velocity.angular.z = target_vel.angular.z
+        self.vx = target_vel.linear.x
+        self.vy = target_vel.linear.y
+        self.w = target_vel.angular.z
 
+    def compute_wheel_velocities(self):
+        if self.vx == 0.0 and self.vy == 0.0:
+            return
+        
+        theta = atan2(self.vy, self.vx)
 
+        for i in range(self.N):
+            self.v[i] = (1/self.r) * (self.vx * cos(theta + self.beta*i) + self.vy * sin(theta + self.beta*i) - self.L * self.w)
+            self.pub[i].publish(self.v[i])
+
+if __name__ == '__main__':
+    kinematic_model = OmnidirectionalInverseKinematics()
+    while not rospy.is_shutdown():
+        kinematic_model.compute_wheel_velocities()
+        rospy.sleep(0.01)
