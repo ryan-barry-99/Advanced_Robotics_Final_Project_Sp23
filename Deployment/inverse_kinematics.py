@@ -28,15 +28,20 @@ from std_msgs.msg import Float64
 from geometry_msgs.msg import Twist
 from math import cos, sin, atan2, pi
 
+# Default values for the class attributes
+WHEEL_RADIUS = 2*.0254 # The radius of the wheels in meters
+L = 8*.0254 # The difference between the wheel and the center of the base in meters
+WHEEL_NAMES = ['wheel1', 'wheel2', 'wheel3'] # A list of names for the wheels
+
 class OmnidirectionalInverseKinematics:
 
-    def __init__(self, wheel_radius=2*.0254, base_width=8*.0254, wheel_names=['wheel1', 'wheel2', 'wheel3']):
+    def __init__(self, wheel_radius=WHEEL_RADIUS, L=L, wheel_names=WHEEL_NAMES):
         # Initialize ROS node
         rospy.init_node('omni_inverse_kinematics')
 
         # Define constants and variables
         self.r = wheel_radius
-        self.L = base_width
+        self.L = L
         self.N = len(wheel_names)
         self.beta = 2*pi/self.N
         self.wheel_names = wheel_names
