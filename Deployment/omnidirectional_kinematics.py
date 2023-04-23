@@ -36,7 +36,7 @@ class OmnidirectionalKinematics:
     '''
     def __init__(self, GEAR_RATIO=4.4*33/11, ENC_CPR=48, WHEEL_RADIUS=2*.0254, L=8*.0254):
         # Initialize ROS node
-        rospy.init_node('omnidirectional_robot_node')
+        rospy.init_node('forward_kinematics_node')
 
         # Define variables
         self.GEAR_RATIO = GEAR_RATIO
