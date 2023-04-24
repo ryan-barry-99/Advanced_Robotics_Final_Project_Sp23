@@ -20,6 +20,7 @@ Date created: April 22, 2023
 
 
 import rospy
+from pinout import pins
 from QuadEncoder import QuadEncoder
 from std_msgs.msg import Float64
 from geometry_msgs.msg import Twist
@@ -58,9 +59,9 @@ class OmnidirectionalForwardKinematics :
         self.pub4 = rospy.Publisher('velocity/robot_velocity/current_velocity', Twist, queue_size=10)
 
         # Create EncoderReader instance
-        self.enc1 = QuadEncoder(encoder_A_pin=11, encoder_B_pin=13, gear_ratio=self.GEAR_RATIO, wheel_radius=self.WHEEL_RADIUS, encoder_cpr=self.ENC_CPR)
-        self.enc2 = QuadEncoder(encoder_A_pin=15, encoder_B_pin=16, gear_ratio=self.GEAR_RATIO, wheel_radius=self.WHEEL_RADIUS, encoder_cpr=self.ENC_CPR)
-        self.enc3 = QuadEncoder(encoder_A_pin=18, encoder_B_pin=22, gear_ratio=self.GEAR_RATIO, wheel_radius=self.WHEEL_RADIUS, encoder_cpr=self.ENC_CPR)
+        self.enc1 = QuadEncoder(encoder_A_pin=pins['encoder_1_a'], encoder_B_pin=pins['encoder_1_b'], gear_ratio=self.GEAR_RATIO, wheel_radius=self.WHEEL_RADIUS, encoder_cpr=self.ENC_CPR)
+        self.enc2 = QuadEncoder(encoder_A_pin=pins['encoder_2_a'], encoder_B_pin=pins['encoder_2_b'], gear_ratio=self.GEAR_RATIO, wheel_radius=self.WHEEL_RADIUS, encoder_cpr=self.ENC_CPR)
+        self.enc3 = QuadEncoder(encoder_A_pin=pins['encoder_3_a'], encoder_B_pin=pins['encoder_3_b'], gear_ratio=self.GEAR_RATIO, wheel_radius=self.WHEEL_RADIUS, encoder_cpr=self.ENC_CPR)
 
     # Calculates the current linear and angular velocities of the robot
     def calculate_robot_velocity(self, v1, v2, v3):
