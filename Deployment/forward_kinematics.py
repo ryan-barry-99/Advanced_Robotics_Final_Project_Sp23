@@ -21,6 +21,7 @@ Date created: April 22, 2023
 
 import rospy
 from pinout import pins
+from robot_constants import constants
 from QuadEncoder import QuadEncoder
 from std_msgs.msg import Float64
 from geometry_msgs.msg import Twist
@@ -28,10 +29,10 @@ from math import cos, sin
 
 
 # Default values for the class attributes
-GEAR_RATIO = 4.4 * 33 / 11  # 4.4:1 Gear ratio motor with 11 tooth drive gear and 33 tooth driven gear
-ENC_CPR = 48  # 48 CPR encoders
-WHEEL_RADIUS = 2 * 0.0254  # 2 inch radius wheels converted to meters
-L = 8 * 0.0254  # Length from center of the robot to the center of the wheels converted to meters
+GEAR_RATIO = constants['gear_ratio']  # 4.4:1 Gear ratio motor with 11 tooth drive gear and 33 tooth driven gear
+ENC_CPR = constants['enc_cpr']  # 48 CPR encoders
+WHEEL_RADIUS = constants['wheel_radius']  # 2 inch radius wheels converted to meters
+L = constants['base_width']  # Length from center of the robot to the center of the wheels converted to meters
 
 
 class OmnidirectionalForwardKinematics :
@@ -79,7 +80,7 @@ class OmnidirectionalForwardKinematics :
             vel2 = self.enc2.get_instantaneous_velocity()
             vel3 = self.enc3.get_instantaneous_velocity()
 
-            rospy.sleep(0.01)
+            time.sleep(0.01)
 
             # Publish velocity to a ROS topic
             self.pub1.publish(vel1)
