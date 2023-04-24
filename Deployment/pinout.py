@@ -1,5 +1,5 @@
 # pinout.py
-# A dictionary containing the GPIO pin numbers for the robot
+# A dictionary containing the GPIO pin numbers for the robot. Updating this file updates pins globally
 
 pinout = {
     'encoder_1_a': 11,
