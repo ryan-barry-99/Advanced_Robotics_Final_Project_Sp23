@@ -4,11 +4,7 @@
 This module provides the `OmnidirectionalKinematics` class which calculates the linear and angular velocities of a three-wheeled omnidirectional robot.
 The class uses the `QuadEncoder` class to obtain and publish the instantaneous velocity of the wheels.
 
-Default values for the `OmnidirectionalKinematics` class are:
-    - GEAR_RATIO = 4.4*33/11: 4.4:1 Gear ratio motor with 11 tooth drive gear and 33 tooth driven gear
-    - ENC_CPR = 48: 48 CPR encoders
-    - WHEEL_RADIUS = 2*.0254: 2 inch radius wheels converted to meters
-    - L = 8*.0254: Length from center of the robot to the center of the wheels converted to meters
+Default values for the `OmnidirectionalForwardKinematics` class are defined in the robot_constants module
 
 The module initializes a ROS node and creates publishers for the wheel and overall robot velocities.
 The `run()` method of the `OmnidirectionalKinematics` class runs in a loop and uses the `QuadEncoder` class to obtain the instantaneous velocity 
