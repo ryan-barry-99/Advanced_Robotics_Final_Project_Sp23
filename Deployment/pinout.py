@@ -1,7 +1,7 @@
 # pinout.py
 # A dictionary containing the GPIO pin numbers for the robot
 
-pins = {
+pinout = {
     'encoder_1_a': 11,
     'encoder_1_b': 13,
     'encoder_2_a': 15,
