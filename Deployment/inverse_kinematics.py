@@ -24,14 +24,15 @@ Date created: April 23, 2023
 """
 
 import rospy
+from robot_constants import constants
 from std_msgs.msg import Float64
 from geometry_msgs.msg import Twist
 from math import cos, sin, atan2, pi
 
 # Default values for the class attributes
-WHEEL_RADIUS = 2*.0254 # The radius of the wheels in meters
-L = 8*.0254 # The difference between the wheel and the center of the base in meters
-WHEEL_NAMES = ['wheel1', 'wheel2', 'wheel3'] # A list of names for the wheels
+WHEEL_RADIUS = constants['wheel_radius'] # The radius of the wheels in meters
+L = constants['base_width'] # The difference between the wheel and the center of the base in meters
+WHEEL_NAMES = constants['wheel_names'] # A list of names for the wheels
 
 class OmnidirectionalInverseKinematics:
 
