@@ -91,10 +91,10 @@ class OmnidirectionalForwardKinematics :
     def run(self):
         while not rospy.is_shutdown():
             # Measure velocity every 0.01 seconds
-            vel = np.empty(0)
+            vel = []
             for i in range(self.wheel_vel_pubs):
                 vel.append(self.enc[i].get_instantaneous_velocity())
-                self.wheel_vel_pubs[i].publish(vel.T)
+                self.wheel_vel_pubs[i].publish(vel[i])
 
             self.robot_vel_pub.publish(self.calculate_robot_velocity(vel))
             
