@@ -16,6 +16,7 @@ Date created: April 22, 2023
 
 
 import rospy
+import time
 from pinout import pinout
 from robot_constants import constants
 from QuadEncoder import QuadEncoder
@@ -70,16 +71,17 @@ class OmnidirectionalForwardKinematics :
         # Create publishers for the velocities
         self.wheel_vel_pubs = []
         for i in range(self.num_wheels):
-            self.wheel_vel_pubs[i] = rospy.Publisher('velocity/wheel_velocities/'+self.WHEEL_NAME[i]+'_vel', Float64, queue_size=10)
+            self.wheel_vel_pubs.append(rospy.Publisher('velocity/wheel_velocities/'+self.wheel_names[i]+'_vel', Float64, queue_size=10))
         self.robot_vel_pub = rospy.Publisher('velocity/robot_velocity/current_velocity', Twist, queue_size=10)
 
+        self.enc = []
         # Create EncoderReader instance
         for i in range(self.num_wheels):
-            self.enc[i] = QuadEncoder(encoder_A_pin=pinout[f'encoder_{i+1}_a'], encoder_B_pin=pinout[f'encoder_{i+1}_b'], gear_ratio=self.gear_ratio, wheel_radius=self.wheel_radius, encoder_cpr=self.enc_cpr)
+            self.enc.append(QuadEncoder(encoder_A_pin=pinout[f'encoder_{i+1}_a'], encoder_B_pin=pinout[f'encoder_{i+1}_b'], gear_ratio=self.gear_ratio, wheel_radius=self.wheel_radius, encoder_cpr=self.enc_cpr))
 
     # Calculates the current linear and angular velocities of the robot
     def calculate_robot_velocity(self, velocities):
-        zeta_dot = np.inv(self.r_theta) * self.J1 * self.J2 * np.array(velocities)
+        zeta_dot = np.linalg.inv(self.r_theta) * self.J1 * self.J2 * np.array(velocities)
 
         robot_vel = Twist()
         robot_vel.linear.x = zeta_dot[0]
@@ -92,7 +94,7 @@ class OmnidirectionalForwardKinematics :
         while not rospy.is_shutdown():
             # Measure velocity every 0.01 seconds
             vel = []
-            for i in range(self.wheel_vel_pubs):
+            for i, _ in enumerate(self.wheel_vel_pubs):
                 vel.append(self.enc[i].get_instantaneous_velocity())
                 self.wheel_vel_pubs[i].publish(vel[i])
 
