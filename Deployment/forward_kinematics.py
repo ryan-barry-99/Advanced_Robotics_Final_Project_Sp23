@@ -55,15 +55,16 @@ class OmnidirectionalForwardKinematics :
         self.L = L
         self.wheel_names = WHEEL_NAMES
         self.num_wheels = len(self.wheel_names)
-        self.alpha = [pi/self.num_wheels + 2*i*pi/self.num_wheels for i in self.num_wheels]
-        self.r_theta = np.eye(len(self.num_wheels))
-        self.J1 = np.empty(0)
-        self.C1 = np.empty(0)
+        self.alpha = [pi/self.num_wheels + 2*i*pi/self.num_wheels for i in range(self.num_wheels)]
+        self.r_theta = np.eye(self.num_wheels)
+        self.J1_list = []
+        self.C1_list = []
         self.J2 = np.eye(len(self.num_wheels)) * self.wheel_radius
         for i, wheel_name in enumerate(self.wheel_names):
-            self.J1.append(np.array([sin(self.alpha + self.beta[i]), cos(self.alpha + self.beta[i]), self.L*cos(self.beta[i])]))
-            self.C1.append(np.array([cos(self.alpha + self.beta[i]), sin(self.alpha + self.beta[i]), self.L*sin(self.beta[i])]))
-
+            self.J1_list.append(np.array([sin(self.alpha[i] + self.beta[i]), cos(self.alpha[i] + self.beta[i]), self.L*cos(self.beta[i])]))
+            self.C1_list.append(np.array([cos(self.alpha[i] + self.beta[i]), sin(self.alpha[i] + self.beta[i]), self.L*sin(self.beta[i])]))
+        self.J1 = np.array(self.J1_list)
+        self.C1 = np.array(self.C1_list)
 
 
         # Create publishers for the velocities
@@ -78,7 +79,7 @@ class OmnidirectionalForwardKinematics :
 
     # Calculates the current linear and angular velocities of the robot
     def calculate_robot_velocity(self, velocities):
-        zeta_dot = np.inv(self.r_theta) * self.J1 * self.J2 * np.array(velocities).T
+        zeta_dot = np.inv(self.r_theta) * self.J1 * self.J2 * np.array(velocities)
 
         robot_vel = Twist()
         robot_vel.linear.x = zeta_dot[0]
@@ -90,10 +91,10 @@ class OmnidirectionalForwardKinematics :
     def run(self):
         while not rospy.is_shutdown():
             # Measure velocity every 0.01 seconds
-            vel = []
+            vel = np.empty(0)
             for i in range(self.wheel_vel_pubs):
-                vel = self.enc[i].get_instantaneous_velocity()
-                self.wheel_vel_pubs[i].publish(vel)
+                vel.append(self.enc[i].get_instantaneous_velocity())
+                self.wheel_vel_pubs[i].publish(vel.T)
 
             self.robot_vel_pub.publish(self.calculate_robot_velocity(vel))
             
