@@ -84,9 +84,9 @@ class OmnidirectionalForwardKinematics :
         zeta_dot = np.linalg.inv(self.r_theta) * self.J1 * self.J2 * np.array(velocities)
 
         robot_vel = Twist()
-        robot_vel.linear.x = zeta_dot[0]
-        robot_vel.linear.y = zeta_dot[1]
-        robot_vel.angular.z = zeta_dot[2]
+        robot_vel.linear.x = zeta_dot[0][0]
+        robot_vel.linear.y = zeta_dot[1][0]
+        robot_vel.angular.z = zeta_dot[2][0]
         return robot_vel    
 
     # Uses QuadEncoder class to obtain and publish the instantaneous velocity of the wheels
