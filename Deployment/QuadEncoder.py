@@ -11,7 +11,7 @@ Date created: April 22, 2023
 
 import time
 import Jetson.GPIO as GPIO
-import math.pi as pi
+from math import pi
 
 # Quadrature Encoder class to obtain position and velocity from a quadrature encoder
 class QuadEncoder:
