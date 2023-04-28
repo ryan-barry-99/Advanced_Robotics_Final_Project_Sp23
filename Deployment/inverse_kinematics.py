@@ -56,7 +56,7 @@ class OmnidirectionalInverseKinematics:
         self.r_theta = np.eye(self.num_wheels)
         self.J1_list = []
         self.C1_list = []
-        self.J2 = np.eye(len(self.num_wheels)) * self.wheel_radius
+        self.J2 = np.eye(self.num_wheels) * self.wheel_radius
         for i, _ in enumerate(self.wheel_names):
             self.J1_list.append(np.array([sin(self.alpha[i] + self.beta[i]), cos(self.alpha[i] + self.beta[i]), self.L*cos(self.beta[i])]))
             self.C1_list.append(np.array([cos(self.alpha[i] + self.beta[i]), sin(self.alpha[i] + self.beta[i]), self.L*sin(self.beta[i])]))
@@ -76,7 +76,7 @@ class OmnidirectionalInverseKinematics:
         self.zeta_dot[0][2] = target_vel.angular.z
 
     def compute_wheel_velocities(self):
-        phi = np.inv(self.J2) * self.J1 * self.r_theta * self.zeta_dot
+        phi = np.linalg.inv(self.J2) * self.J1 * self.r_theta * self.zeta_dot
 
         for i in range(self.num_wheels):
             self.pub[i].publish(phi[i])
