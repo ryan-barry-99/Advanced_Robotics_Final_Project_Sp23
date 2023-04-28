@@ -9,6 +9,9 @@ constants = {
     'wheel_names': ['wheel1', 'wheel2', 'wheel3'], # A list of names for the wheels
     'gear_ratio': 4.4*33/11, # 4.4:1 Gear ratio motor with 11 tooth drive gear and 33 tooth driven gear
     'enc_cpr': 48, # 48 CPR encoders
-    'beta': [0, 0, 0], # Angle between center of robot and wheel rotation axis
-    'gamma': [0, 0, 0] # 90 - angle between wheel rotation axis and roller rotation axis
+    'beta': [0, 0, 0], # Angle between center of robot and wheel rotation axis for each wheel
+    'gamma': [0, 0, 0], # 90 - angle between wheel rotation axis and roller rotation axis for each wheel
+    'kp': [1.0, 1.0, 1.0], # Proportional gain for each wheel
+    'ki': [0.5, 0.5, 0.5], # Integral gain for each wheel
+    'kd': [0.2, 0.2, 0.2] # Derivative gain for each wheel
 }
