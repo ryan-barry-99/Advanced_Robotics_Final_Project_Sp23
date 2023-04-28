@@ -36,10 +36,9 @@ WHEEL_NAMES = constants['wheel_names'] # A list of names for the wheels
 BETA = constants['beta']
 
 class OmnidirectionalInverseKinematics:
-
     def __init__(self, beta=BETA, wheel_radius=WHEEL_RADIUS, L=L, wheel_names=WHEEL_NAMES):
         # Initialize ROS node
-        rospy.init_node('omni_inverse_kinematics')
+        rospy.init_node('inverse_kinematice_node')
 
         # Define constants and variables
         self.wheel_radius = wheel_radius
