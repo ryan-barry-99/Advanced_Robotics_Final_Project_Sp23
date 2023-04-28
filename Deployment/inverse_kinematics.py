@@ -1,4 +1,3 @@
-  
 #!/usr/bin/env python
 
 """
@@ -27,31 +26,43 @@ import rospy
 from robot_constants import constants
 from std_msgs.msg import Float64
 from geometry_msgs.msg import Twist
+import numpy as np
 from math import cos, sin, atan2, pi
 
 # Default values for the class attributes
 WHEEL_RADIUS = constants['wheel_radius'] # The radius of the wheels in meters
 L = constants['base_width'] # The difference between the wheel and the center of the base in meters
 WHEEL_NAMES = constants['wheel_names'] # A list of names for the wheels
+BETA = constants['beta']
 
 class OmnidirectionalInverseKinematics:
 
-    def __init__(self, wheel_radius=WHEEL_RADIUS, L=L, wheel_names=WHEEL_NAMES):
+    def __init__(self, beta=BETA, wheel_radius=WHEEL_RADIUS, L=L, wheel_names=WHEEL_NAMES):
         # Initialize ROS node
         rospy.init_node('omni_inverse_kinematics')
 
         # Define constants and variables
-        self.r = wheel_radius
+        self.wheel_radius = wheel_radius
         self.L = L
-        self.N = len(wheel_names)
-        self.beta = 2*pi/self.N
+        self.num_wheels = len(wheel_names)
+        self.alpha = [pi/self.num_wheels + 2*i*pi/self.num_wheels for i in range(self.num_wheels)]
+        self.beta = beta
         self.wheel_names = wheel_names
 
         # Initialize target velocities and wheel velocities
-        self.vx = 0.0
-        self.vy = 0.0
-        self.w = 0.0
-        self.v = [0.0] * self.N
+        self.zeta_dot = np.zeros((3,1))
+        self.wheel_vel = np.zeros((self.num_wheels, 1))
+
+        # Initialized Matrices
+        self.r_theta = np.eye(self.num_wheels)
+        self.J1_list = []
+        self.C1_list = []
+        self.J2 = np.eye(len(self.num_wheels)) * self.wheel_radius
+        for i, _ in enumerate(self.wheel_names):
+            self.J1_list.append(np.array([sin(self.alpha[i] + self.beta[i]), cos(self.alpha[i] + self.beta[i]), self.L*cos(self.beta[i])]))
+            self.C1_list.append(np.array([cos(self.alpha[i] + self.beta[i]), sin(self.alpha[i] + self.beta[i]), self.L*sin(self.beta[i])]))
+        self.J1 = np.array(self.J1_list)
+        self.C1 = np.array(self.C1_list)
 
         # Create subscribers for the target velocities
         rospy.Subscriber('velocity/target_velocity', Twist, callback=self.target_velocity_callback)
@@ -61,19 +72,15 @@ class OmnidirectionalInverseKinematics:
 
 
     def target_velocity_callback(self, target_vel):
-        self.vx = target_vel.linear.x
-        self.vy = target_vel.linear.y
-        self.w = target_vel.angular.z
+        self.zeta_dot[0][0] = target_vel.linear.x
+        self.zeta_dot[0][1] = target_vel.linear.y
+        self.zeta_dot[0][2] = target_vel.angular.z
 
     def compute_wheel_velocities(self):
-        if self.vx == 0.0 and self.vy == 0.0:
-            return
-        
-        theta = atan2(self.vy, self.vx)
+        phi = np.inv(self.J2) * self.J1 * self.r_theta * self.zeta_dot
 
-        for i in range(self.N):
-            self.v[i] = (1/self.r) * (self.vx * cos(theta + self.beta*i) + self.vy * sin(theta + self.beta*i) - self.L * self.w)
-            self.pub[i].publish(self.v[i])
+        for i in range(self.num_wheels):
+            self.pub[i].publish(phi[i])
 
 if __name__ == '__main__':
     inverse_kinematic_model = OmnidirectionalInverseKinematics()
