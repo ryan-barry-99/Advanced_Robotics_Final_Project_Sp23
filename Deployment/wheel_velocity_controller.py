@@ -33,6 +33,7 @@ class Wheel:
         self.pid = PIDController(kp, ki, kd)
         self.targeted_velocity = 0
         self.current_velocity = 0
+        self.pwm = 0
         self.n = wheel_number
         self.motor = Motor(in1_pin=pinout[f'motor_{self.n+1}_dir_a'], in2_pin=pinout[f'motor_{self.n+1}_dir_b'], pwm_pin=pinout[f'motor_{self.n+1}_pwm'])
 
@@ -49,13 +50,13 @@ class Wheel:
 
 
     def update(self):
-        output = self.pid.update(self.targeted_velocity, self.current_velocity)
+        self.pwm += self.pid.update(self.targeted_velocity, self.current_velocity)
         if output >= 0:
             self.motor.set_direction('forward')
-            self.motor.set_speed(min(output, 100))
+            self.motor.set_speed(min(self.pwm, 100))
         else:
             self.motor.set_direction('backward')
-            self.motor.set_speed(min(-output, 100))
+            self.motor.set_speed(min(-self.pwm, 100))
 
         self.motor.update_pwm()
 
