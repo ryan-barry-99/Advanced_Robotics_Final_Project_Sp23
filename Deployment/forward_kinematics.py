@@ -45,7 +45,7 @@ class OmnidirectionalForwardKinematics :
         :param L: The distance from the center of the robot to the center of the wheels in meters.
         """
         # Initialize ROS node
-        rospy.init_node('velocity_node')
+        rospy.init_node('forward_kinematics_node')
 
         # Define variables
         self.beta = BETA
