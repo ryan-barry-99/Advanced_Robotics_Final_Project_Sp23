@@ -9,6 +9,7 @@ Date created: April 27, 2023
 '''
 
 import Jetson.GPIO as GPIO
+from robot_constants import constants
 import time
 
 class Motor:
@@ -17,7 +18,7 @@ class Motor:
         self.in2_pin = in2_pin
         self.pwm_pin = pwm_pin
         self.duty_cycle = 0
-        self.frequency = 1800
+        self.frequency = constants['motor_frequency']
         self.pwm_running = False
         self.next_toggle_time = 0
         GPIO.setmode(GPIO.BOARD)
