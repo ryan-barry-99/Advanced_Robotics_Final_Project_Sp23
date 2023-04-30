@@ -13,8 +13,8 @@ pinout = {
     'motor_1_pwm': 23,
     'motor_2_dir_a': 24,
     'motor_2_dir_b': 26,
-    'motor_2_pwm': 27,
-    'motor_3_dir_a': 28,
-    'motor_3_dir_b': 29,
-    'motor_3_pwm': 31
+    'motor_2_pwm': 29,
+    'motor_3_dir_a': 31,
+    'motor_3_dir_b': 33,
+    'motor_3_pwm': 35
 }
