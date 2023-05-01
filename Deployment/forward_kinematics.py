@@ -64,8 +64,8 @@ class OmnidirectionalForwardKinematics :
         for i, _ in enumerate(self.wheel_names):
             self.J1_list.append(np.array([sin(self.alpha[i] + self.beta[i]), cos(self.alpha[i] + self.beta[i]), self.L*cos(self.beta[i])]))
             self.C1_list.append(np.array([cos(self.alpha[i] + self.beta[i]), sin(self.alpha[i] + self.beta[i]), self.L*sin(self.beta[i])]))
-        self.J1 = np.array(self.J1_list)
-        self.C1 = np.array(self.C1_list)
+        self.J1 = np.array(self.J1_list).T
+        self.C1 = np.array(self.C1_list).T
 
 
         # Create publishers for the velocities
@@ -81,12 +81,11 @@ class OmnidirectionalForwardKinematics :
 
     # Calculates the current linear and angular velocities of the robot
     def calculate_robot_velocity(self, velocities):
-        zeta_dot = np.linalg.inv(self.r_theta) * self.J1 * self.J2 * np.array(velocities)
-
+        zeta_dot = np.linalg.inv(self.r_theta) @ self.J1 @ self.J2 @ np.array(velocities)
         robot_vel = Twist()
-        robot_vel.linear.x = zeta_dot[0][0]
-        robot_vel.linear.y = zeta_dot[1][0]
-        robot_vel.angular.z = zeta_dot[2][0]
+        robot_vel.linear.x = zeta_dot[0]
+        robot_vel.linear.y = zeta_dot[1]
+        robot_vel.angular.z = zeta_dot[2]
         return robot_vel    
 
     # Uses QuadEncoder class to obtain and publish the instantaneous velocity of the wheels
@@ -99,13 +98,12 @@ class OmnidirectionalForwardKinematics :
                 self.wheel_vel_pubs[i].publish(vel[i])
 
             self.robot_vel_pub.publish(self.calculate_robot_velocity(vel))
-            
             time.sleep(0.01)
             
+            
+            
         # Clean up GPIO pins
-        self.enc1.cleanup()
-        self.enc2.cleanup()
-        self.enc3.cleanup()
+        [self.enc[i].cleanup() for i in range(len(self.enc))]
 
 
 if __name__ == '__main__':
