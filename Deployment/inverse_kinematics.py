@@ -71,16 +71,16 @@ class OmnidirectionalInverseKinematics:
 
 
     def target_velocity_callback(self, target_vel):
-        self.zeta_dot[0][0] = target_vel.linear.x
-        self.zeta_dot[0][1] = target_vel.linear.y
-        self.zeta_dot[0][2] = target_vel.angular.z
+        self.zeta_dot[0] = target_vel.linear.x
+        self.zeta_dot[1] = target_vel.linear.y
+        self.zeta_dot[2] = target_vel.angular.z
 
     def compute_wheel_velocities(self):
-        phi = np.linalg.inv(self.J2) * self.J1 * self.r_theta * self.zeta_dot
+        phi = np.linalg.inv(self.J2) @ self.J1 @ self.r_theta @ self.zeta_dot
 
         for i in range(self.num_wheels):
-            self.pub[i].publish(phi[i])
-
+            self.pub[i].publish(float(phi[i]))
+            
 if __name__ == '__main__':
     inverse_kinematic_model = OmnidirectionalInverseKinematics()
     while not rospy.is_shutdown():
