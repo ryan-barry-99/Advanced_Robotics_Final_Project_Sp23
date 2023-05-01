@@ -27,7 +27,7 @@ from robot_constants import constants
 from std_msgs.msg import Float64
 from geometry_msgs.msg import Twist
 import numpy as np
-from math import cos, sin, atan2, pi
+from math import cos, sin, pi
 
 # Default values for the class attributes
 WHEEL_RADIUS = constants['wheel_radius'] # The radius of the wheels in meters
