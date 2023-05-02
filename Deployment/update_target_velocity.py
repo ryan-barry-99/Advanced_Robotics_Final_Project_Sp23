@@ -30,7 +30,7 @@ class UpdateTargetVelocity:
         self.pub = rospy.Publisher('velocity/target_velocity', Twist, queue_size=10)
 
         # Create subscribers for the target velocitiy and balloon velocity
-        rospy.Subscriber('velocity/target_velocity', Twist, callback=self.target_velocity_callback)
+        rospy.Subscriber('velocity/robot_velocity/current_velocity', Twist, callback=self.current_velocity_callback)
         rospy.Subscriber('balloon_velocity', Vector3, self.balloon_velocity_callback)
 
         # Initia;oze c;ass variables
@@ -45,10 +45,10 @@ class UpdateTargetVelocity:
         self.balloon_velocity.z = 0.0
 
 
-    def target_velocity_callback(self, target_vel):
-        self.target_velocity.linear.x = target_vel.linear.x
-        self.target_velocity.linear.y = target_vel.linear.y
-        self.target_velocity.angular.z = target_vel.angular.z
+    def current_velocity_callback(self, current_vel):
+        self.target_velocity.linear.x = current_vel.linear.x
+        self.target_velocity.linear.y = current_vel.linear.y
+        self.target_velocity.angular.z = current_vel.angular.z
 
 
     def balloon_velocity_callback(self, balloon_vel):
