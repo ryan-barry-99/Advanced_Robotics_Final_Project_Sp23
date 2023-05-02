@@ -1,5 +1,5 @@
 # pinout.py
-# A dictionary containing the GPIO pin numbers for the robot. Updating this file updates pin assignments globally
+# A dictionary containing the Jetson Nano GPIO pin numbers for the robot. Updating this file updates pin assignments globally
 
 pinout = {
     'encoder_1_a': 11,
