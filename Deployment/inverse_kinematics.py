@@ -58,7 +58,7 @@ class OmnidirectionalInverseKinematics:
         self.C1_list = []
         self.J2 = np.eye(self.num_wheels) * self.wheel_radius
         for i, _ in enumerate(self.wheel_names):
-            self.J1_list.append(np.array([sin(self.alpha[i] + self.beta[i]), cos(self.alpha[i] + self.beta[i]), self.L*cos(self.beta[i])]))
+            self.J1_list.append(np.array([sin(self.alpha[i] + self.beta[i]), -cos(self.alpha[i] + self.beta[i]), -self.L*cos(self.beta[i])]))
             self.C1_list.append(np.array([cos(self.alpha[i] + self.beta[i]), sin(self.alpha[i] + self.beta[i]), self.L*sin(self.beta[i])]))
         self.J1 = np.array(self.J1_list)
         self.C1 = np.array(self.C1_list)
