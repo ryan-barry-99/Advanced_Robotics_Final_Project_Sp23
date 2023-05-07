@@ -9,7 +9,8 @@ constants = {
     'wheel_names': ['wheel1', 'wheel2', 'wheel3'], # A list of names for the wheels
     'gear_ratio': 4.4*33/11, # 4.4:1 Gear ratio motor with 11 tooth drive gear and 33 tooth driven gear
     'enc_cpr': 48, # 48 CPR encoders
-    'motor_frequency': 1000, # Set motor PWM frequency to 1.8 kHz
+    'motor_frequency': 1000, # Set motor PWM frequency to 1 kHz
+    'servo_frequency': 1000, # Set servo PWM frequency to 1 kHz
     'beta': [0, 0, 0], # Angle between center of robot and wheel rotation axis for each wheel
     'gamma': [0, 0, 0], # 90 - angle between wheel rotation axis and roller rotation axis for each wheel
     'kp': [1.0, 1.0, 1.0], # Proportional gain for each wheel
