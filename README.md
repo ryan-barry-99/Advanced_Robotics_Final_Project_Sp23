@@ -25,7 +25,7 @@ The code for the ROS architecture that supports this robot is located in the Dep
 - update_target_velocity.py: Updates and publishes the robot's target velocity based on its current velocity and the balloon's velocity
 - wheel_velocity_controller.py: Uses the PIDController class to match the robot's targeted and actual velocity
 
-# Dependencies
+# Deployment Dependencies
 
 - time
 - Jetson.GPIO
