@@ -21,6 +21,8 @@ The code for the ROS architecture that supports this robot is located in the Dep
 - pid_controller.py: Defines a PIDController class for use in updating wheel velocities
 - pinout.py: Defines a dictionary containing the pinout for the robot. Updating pins here reflects the change globally
 - robot_constants.py: Defines a dictionary containing the constants of an individual mobile robot. Updating the constants here reflects the change globally
+- servo.py: Defines a class that enables PWM control for a servo
+- update_target_velocity.py: Updates and publishes the robot's target velocity based on its current velocity and the balloon's velocity
 - wheel_velocity_controller.py: Uses the PIDController class to match the robot's targeted and actual velocity
 
 # Dependencies
