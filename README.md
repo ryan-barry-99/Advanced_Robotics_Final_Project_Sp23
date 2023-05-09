@@ -22,3 +22,14 @@ The code for the ROS architecture that supports this robot is located in the Dep
 - pinout.py: Defines a dictionary containing the pinout for the robot. Updating pins here reflects the change globally
 - robot_constants.py: Defines a dictionary containing the constants of an individual mobile robot. Updating the constants here reflects the change globally
 - wheel_velocity_controller.py: Uses the PIDController class to match the robot's targeted and actual velocity
+
+# Dependencies
+
+- time
+- Jetson.GPIO
+- math
+- pathlib
+- sys
+- opencv-python
+- numpy
+- rospy
