@@ -51,7 +51,7 @@ class Wheel:
 
     def update(self):
         self.pwm += self.pid.update(self.targeted_velocity, self.current_velocity)
-        if output >= 0:
+        if self.pwm >= 0:
             self.motor.set_direction('forward')
             self.motor.set_speed(min(self.pwm, 100))
         else:
